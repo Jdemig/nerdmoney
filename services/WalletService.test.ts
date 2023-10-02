@@ -1,5 +1,5 @@
 import {describe} from "@jest/globals";
-import prisma from "../lib/db.ts";
+import prisma from "../prisma/db.ts";
 import WalletService from "./WalletService.ts";
 import {ADDRESS_LIST} from "../lib/addresses.ts";
 

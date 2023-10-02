@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next/types';
 import {adminAuth} from "../../lib/initFirebaseAdmin.ts";
-import prisma from "../../lib/db.ts";
+import prisma from "../../prisma/db.ts";
 import cookie from "cookie";
 import WalletService from "../../services/WalletService.ts";
 

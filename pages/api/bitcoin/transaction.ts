@@ -2,7 +2,7 @@ import {NextApiRequest, NextApiResponse} from "next/types";
 import {blockcypherFetch} from "../../../lib/blockcypherFetch.ts";
 import cookie from "cookie";
 import {z} from "zod";
-import prisma from "../../../lib/db.ts";
+import prisma from "../../../prisma/db.ts";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

@@ -1,4 +1,4 @@
-import prisma from "../lib/db.ts";
+import prisma from "../prisma/db.ts";
 import {ADDRESS_LIST} from "../lib/addresses.ts";
 
 

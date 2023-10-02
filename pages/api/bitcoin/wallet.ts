@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next/types";
 import {blockcypherFetch} from "../../../lib/blockcypherFetch.ts";
-import prisma from "../../../lib/db.ts";
+import prisma from "../../../prisma/db.ts";
 import {z} from "zod";
 import cookie from "cookie";
 
