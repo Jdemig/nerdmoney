@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userID    Int     @id @default(autoincrement())
+  email     String  @unique
+  firstName String?
+  lastName  String?
+}
+
+model Wallet {
+  walletID Int    @id @default(autoincrement())
+  userID   Int
+  balance  Float  @default(0)
+  address  String @unique
+}
+
+model Transaction {
+  transactionID Int      @id @default(autoincrement())
+  userID        Int
+  walletID      Int
+  txhash        String   @unique
+  amount        Float
+  confirmations Int
+  date          DateTime @default(now())
+  toAddress     String?
+  fromAddress   String?
+}
+
+model TransactionInput {
+  transactionInputID Int     @id @default(autoincrement())
+  transactionID      Int
+  address            String
+  amount             Float
+  script             String?
+  scriptType         String
+}
+
+model TransactionOutput {
+  transactionOutputID Int     @id @default(autoincrement())
+  transactionID       Int
+  address             String
+  amount              Float
+  script              String?
+  scriptType          String
+}

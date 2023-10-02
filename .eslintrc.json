@@ -1,3 +1,29 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next", "prettier", "plugin:prettier/recommended", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "root": true,
+  "rules": {
+    "indent": ["warn", 4, { "SwitchCase": 1 }],
+    "react/jsx-indent": ["warn", 4],
+    "react/jsx-indent-props": ["warn", 4],
+    "prettier/prettier": "off",
+    "@next/next/no-img-element": "off",
+    "jsx-a11y/alt-text": "off",
+    "react/display-name": "off",
+    "eslint-disable-next-line": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-max-props-per-line": [
+      1,
+        {
+          "maximum": 2,
+          "when": "multiline"
+        }
+    ],
+    "max-classes-per-file": "off",
+    "padded-blocks": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/ban-ts-comment": "warn"
+  }
 }

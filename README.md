@@ -1,36 +1,48 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# CLI Tools
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## npm run generate
+### This command allows you to rebuild all pages under a specific siteId
+### e.g
+```bash
+yarn run generate --siteId 11
+```
 
-## Learn More
+## npm run clear
+### This command allows you to delete all pages in the pages /themes/default/pages folder.
+### e.g
+```bash
+yarn run clear --siteId 2
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Flags
+### theme - allows you to pick the theme folder you are building
+-- theme default
+### projectID - allows you to pick the projectID that you are building for. For dev purposes you most likely want to create a project for yourself to build it in.
+### this can be done by adding a project row to the project table in the database
+-- projectId 2
+### slug - allow you to pick which page you build - you might want to only build one page vs build all of them in the pages folder
+--slug mint
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+# Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If you want to build theme pages and debug them and test them start by looking in the /themes/pages directory
+Each one of those pages routes to /sites/{project.slug}/{page.slug}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Once you get into these pages you'll see a root parameter. This is what allows you to build page_modules. All these page modules are stored in the page_module table in the database
+
+When rendered each page_module corresponds to a div, img, or anchor tag. A page_module can also correspond to a pre-built component, although it's recommended to avoid using
+components if at all possible and instead try to build everything with page_modules.
+
