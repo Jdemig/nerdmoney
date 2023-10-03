@@ -95,21 +95,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // update to and from addresses
     if (txn.addresses.length >= 2) {
-        let fromAddress = txn.addresses[1];
-        let toAddress = txn.addresses[0];
+        let fromAddress;
+        let toAddress;
 
-        let isToAddressCorrect = false;
-        for (let i = 0; i < txn.outputs.length; i++) {
-            const output = txn.outputs[i];
-            if (output.addresses.includes(toAddress)) {
-                isToAddressCorrect = true;
+        let isAddressInInput = false;
+        let isAddressInOutput = false;
+
+        for (let i = 0; i < txn.inputs.length; i++) {
+            const input = txn.inputs[i];
+            if (input.addresses.includes(address)) {
+                isAddressInInput = true;
                 break;
             }
         }
 
-        if (!isToAddressCorrect) {
-            fromAddress = txn.addresses[0];
-            toAddress = txn.addresses[1];
+        for (let i = 0; i < txn.outputs.length; i++) {
+            const output = txn.outputs[i];
+            if (output.addresses.includes(address)) {
+                isAddressInOutput = true;
+                break;
+            }
+        }
+
+        if (!isAddressInInput && !isAddressInOutput) {
+            return res.status(200).json({ message: 'Address not found in transaction' });
+        } else if (isAddressInInput && isAddressInOutput) {
+            return res.status(200).json({ message: 'Address found in both input and output' });
+        } else if (isAddressInInput) {
+            fromAddress = address;
+
+            toAddress = txn.outputs[0].addresses[0];
+        } else if (isAddressInOutput) {
+            toAddress = address;
+
+            fromAddress = txn.inputs[0].addresses[0];
         }
 
         transaction = await prisma.transaction.update({
