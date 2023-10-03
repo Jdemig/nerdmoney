@@ -42,8 +42,6 @@ const UserProvider = ({ children }) => {
         const cookieString = Cookies.get('session');
         const session = JSON.parse(cookieString ? cookieString : '{}');
 
-        console.log(session);
-
         setUser(session.user);
         setToken(session.token);
     }, []);
@@ -60,7 +58,16 @@ const UserProvider = ({ children }) => {
             },
         });
 
-        console.log(res);
+        if (res.data.code && res.data.code === 'no-addresses-available') {
+            toast('Account creation is temporarily disabled. Please try again later.');
+        } else {
+            setUser(res.data.user);
+            setToken(res.data.token);
+
+            await router.push('/account');
+
+            toast('You\'re signed in');
+        }
 
         return res;
     }
@@ -72,18 +79,7 @@ const UserProvider = ({ children }) => {
 
                 const user = userCredential.user;
 
-                onFirebaseAuth(user)
-                    .then(async (res) => {
-                        console.log(res);
-
-
-                        setUser(res.data.user);
-                        setToken(res.data.token);
-
-                        await router.push('/account');
-
-                        toast('You\'re signed in');
-                    });
+                onFirebaseAuth(user);
             });
     }
 
@@ -92,26 +88,11 @@ const UserProvider = ({ children }) => {
             .then((userCredential) => {
                const user = userCredential.user;
 
-               onFirebaseAuth(user)
-                   .then(async (res) => {
-                       console.log(res);
-
-                       setUser(res.data.user);
-                       setToken(res.data.token);
-
-                       await router.push('/account');
-
-                       toast('Thanks for signing up!');
-                   });
+               onFirebaseAuth(user);
             })
             .catch((err) => {
-               console.log(err);
-
-               console.log(err.message);
-               console.log(err.code);
-
                if (err.code === 'auth/email-already-in-use') {
-                   toast('Email already in use');
+                   onSignInClick(email, password);
                }
             });
     }

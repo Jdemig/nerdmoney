@@ -2,8 +2,8 @@ import {NextApiRequest, NextApiResponse} from 'next/types';
 import {adminAuth} from "../../lib/initFirebaseAdmin.ts";
 import prisma from "../../prisma/db.ts";
 import cookie from "cookie";
+import {isWalletError, WalletError} from "../../services/WalletService.ts";
 import WalletService from "../../services/WalletService.ts";
-
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
@@ -40,7 +40,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         },
                     });
 
-                    await WalletService.generateNewWalletOnSignUp(user.userID);
+                    const wallet = await WalletService.generateNewWalletOnSignUp(user.userID);
+                    if (isWalletError(wallet))
+                        return res.status(200).json(wallet);
                 }
 
                 const cookies = cookie.parse(req.headers.cookie || '');
