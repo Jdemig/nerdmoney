@@ -22,9 +22,7 @@ export default function Navbar() {
 
             <div className="w-full h-full max-w-6xl px-8 flex items-center justify-between m-auto">
                 <Link href="/">
-                    <a>
-                        <img alt="logo" src="/logo-light.png" className="h-12" />
-                    </a>
+                    <img alt="logo" src="/logo-light.png" className="h-12" />
                 </Link>
 
 
@@ -39,18 +37,18 @@ export default function Navbar() {
 
                             {!isLoggedIn ? (
                                 <>
-                                    <Link href="/signin">
-                                        <a className="py-2">Sign in</a>
+                                    <Link href="/signin" className="py-2">
+                                        Sign in
                                     </Link>
-                                    <Link href="/signup">
-                                        <a className="py-2">Sign up</a>
+                                    <Link href="/signup" className="py-2">
+                                        Sign up
                                     </Link>
                                 </>
                             ) : (
                                 <>
                                     <div className="mt-2 mb-2 py-2 px-4 bg-gray-200 text-gray-600 rounded-lg overflow-hidden text-ellipsis w-full">{user.email}</div>
-                                    <Link href="/account">
-                                        <a className="py-2">Account</a>
+                                    <Link href="/account" className="py-2">
+                                        Account
                                     </Link>
                                     <button className="text-left py-2" onClick={handleSignOutClick}>
                                         Sign out
