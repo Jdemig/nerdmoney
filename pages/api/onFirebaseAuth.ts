@@ -2,15 +2,15 @@ import {NextApiRequest, NextApiResponse} from 'next/types';
 import {adminAuth} from "../../lib/initFirebaseAdmin.ts";
 import prisma from "../../prisma/db.ts";
 import cookie from "cookie";
-import {isWalletError, WalletError} from "../../services/WalletService.ts";
 import WalletService from "../../services/WalletService.ts";
+import {sendStdError} from "../../utils/response.ts";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const authorization = req.headers.authorization;
 
         if (!authorization || !authorization.startsWith('Bearer ')) {
-            return res.status(200).json({ message: 'Not authorized' });
+            return sendStdError(res, 'Not authorized');
         }
 
         const token = authorization.replace('Bearer', '').trim();
@@ -33,16 +33,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
                 });
 
-                if (!user) {
-                    user = await prisma.user.create({
-                        data: {
-                            email: firebaseUserEmail,
-                        },
-                    });
+                try {
+                    if (!user) {
+                        user = await prisma.user.create({
+                            data: {
+                                email: firebaseUserEmail,
+                            },
+                        });
 
-                    const wallet = await WalletService.generateNewWalletOnSignUp(user.userID);
-                    if (isWalletError(wallet))
-                        return res.status(200).json(wallet);
+                        await WalletService.generateNewWalletOnSignUp(user.userID);
+                    } else {
+                        const wallet = await prisma.wallet.findFirst({
+                            where: {
+                                userID: user.userID,
+                            },
+                        });
+
+                        if (!wallet)
+                            await WalletService.generateNewWalletOnSignUp(user.userID);
+                    }
+                } catch (e) {
+                    return sendStdError(res, e);
                 }
 
                 const cookies = cookie.parse(req.headers.cookie || '');

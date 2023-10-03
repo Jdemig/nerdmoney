@@ -1,22 +1,13 @@
 import prisma from "../prisma/db.ts";
 import {ADDRESS_LIST} from "../lib/addresses.ts";
 import {Wallet} from ".prisma/client";
-
-
-export function isWalletError(wallet: Wallet | WalletError): wallet is WalletError {
-    return (wallet as WalletError).error !== undefined;
-}
-
-export type WalletError = {
-    error: string;
-    code: string;
-}
+import {createStdError} from "../utils/response.ts";
 
 
 
 class WalletService {
     // when a user signs up we have a pre-generated list of addresses and the user grabs the next available one and we create a wallet for them
-    static generateNewWalletOnSignUp = async (userID: number): Promise<Wallet | WalletError> => {
+    static generateNewWalletOnSignUp = async (userID: number): Promise<Wallet> => {
         const wallets = await prisma.wallet.findMany({
             where: {
                 address: {
@@ -35,10 +26,7 @@ class WalletService {
         }
 
         if (firstAddressNotInList === '') {
-            return {
-                error: 'No more addresses available',
-                code: 'no-addresses-available'
-            };
+            throw createStdError({ message: 'No more addresses available', code: 'no-addresses-available' });
         }
 
 

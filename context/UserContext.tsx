@@ -50,26 +50,28 @@ const UserProvider = ({ children }) => {
     const onFirebaseAuth = async (user: User) => {
         const token = await user.getIdToken();
 
-        console.log(token);
+        try {
+            const res = await axios.post('/api/onFirebaseAuth', {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        const res = await axios.post('/api/onFirebaseAuth', {}, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        if (res.data.code && res.data.code === 'no-addresses-available') {
-            toast('Account creation is temporarily disabled. Please try again later.');
-        } else {
             setUser(res.data.user);
             setToken(res.data.token);
 
             await router.push('/account');
 
             toast('You\'re signed in');
-        }
+        } catch (e) {
+            const {data} = e.response;
 
-        return res;
+            if (data.code && data.code === "no-addresses-available") {
+                toast('Account creation is temporarily disabled. Please try again later.');
+            } else if (data.message) {
+                toast(data.message);
+            }
+        }
     }
 
 
@@ -91,6 +93,7 @@ const UserProvider = ({ children }) => {
                onFirebaseAuth(user);
             })
             .catch((err) => {
+                console.log(err.code);
                if (err.code === 'auth/email-already-in-use') {
                    onSignInClick(email, password);
                }
