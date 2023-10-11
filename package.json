@@ -1,5 +1,6 @@
 {
-  "name": "next-netlify-starter",
+  "license": "UNLICENSED",
+  "name": "nerdmoney",
   "version": "0.5.0",
   "private": true,
   "scripts": {
@@ -13,9 +14,16 @@
   },
   "dependencies": {
     "@prisma/client": "^5.3.1",
+    "argon2-browser": "^1.18.0",
     "autoprefixer": "^10.4.15",
     "axios": "^1.5.0",
+    "bip32": "^4.0.0",
+    "bip39": "^3.1.0",
+    "bitcoinjs-lib": "^6.1.5",
+    "browserify": "^17.0.0",
     "cookie": "^0.5.0",
+    "crypto-js": "^4.1.1",
+    "ecpair": "2.0.1",
     "firebase": "^10.4.0",
     "firebase-admin": "^11.10.1",
     "js-cookie": "^3.0.5",
@@ -25,6 +33,7 @@
     "react-dom": "^18.0.0",
     "react-toastify": "^9.1.3",
     "tailwindcss": "^3.3.3",
+    "tiny-secp256k1": "1.1.6",
     "zod": "^3.22.2"
   },
   "devDependencies": {
@@ -33,8 +42,11 @@
     "@testing-library/user-event": "^14.5.1",
     "@types/jest": "^29.5.5",
     "@types/react": "18.2.22",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "babel-jest": "^29.7.0",
+    "enhanced-resolve": "^5.15.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.6.4",
     "prisma": "^5.3.1",
     "typescript": "5.2.2"
   }

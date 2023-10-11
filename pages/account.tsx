@@ -30,16 +30,15 @@ export default function Account() {
 
     const asyncUseEffect = async () => {
         try {
-            const res = await axios.get('/api/bitcoin/wallet');
-            console.log(res.data);
-            const {wallet, transactions} = res.data;
+            const res = await axios.get('/api/bitcoin/address');
+            const {address, transactions} = res.data;
 
-            setBalance(wallet.balance / 100000000);
-            setAddress(wallet.address);
+            setBalance(address.balance / 100000000);
+            setAddress(address.address);
 
             const newTransactions: any = [];
             for (const txn of transactions) {
-                const txnRes = await axios.get(`/api/bitcoin/transaction?txhash=${txn.txhash}&address=${wallet.address}`);
+                const txnRes = await axios.get(`/api/bitcoin/transaction?txhash=${txn.txhash}&address=${address.address}`);
 
                 const {transaction} = txnRes.data;
                 newTransactions.push(transaction);

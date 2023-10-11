@@ -11,45 +11,81 @@ datasource db {
 }
 
 model User {
-  userID    Int     @id @default(autoincrement())
-  email     String  @unique
+  userID    Int      @id @default(autoincrement())
+  email     String   @unique
   firstName String?
   lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Wallet {
-  walletID Int    @id @default(autoincrement())
-  userID   Int
-  balance  Float  @default(0)
-  address  String @unique
+model Account {
+  accountID  Int      @id @default(autoincrement())
+  userID     Int
+  name       String?
+  balance    Float    @default(0)
+  salt       String
+  initVect   String
+  cipherText String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Address {
+  addressID Int      @id @default(autoincrement())
+  accountID Int
+  userID    Int
+  balance   Float    @default(0)
+  address   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Transaction {
   transactionID Int      @id @default(autoincrement())
   userID        Int
-  walletID      Int
-  txhash        String   @unique
+  addressID     Int
+  accountID     Int
+  txhash        String?  @unique
   amount        Float
-  confirmations Int
   date          DateTime @default(now())
   toAddress     String?
   fromAddress   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
-model TransactionInput {
-  transactionInputID Int     @id @default(autoincrement())
-  transactionID      Int
-  address            String
-  amount             Float
-  script             String?
-  scriptType         String
+model BtcTransaction {
+  btcTransactionID Int      @id @default(autoincrement())
+  userID           Int
+  addressID        Int
+  accountID        Int
+  txhash           String   @unique
+  amount           Float
+  confirmations    Int
+  date             DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
-model TransactionOutput {
-  transactionOutputID Int     @id @default(autoincrement())
-  transactionID       Int
-  address             String
-  amount              Float
-  script              String?
-  scriptType          String
+model BtcTransactionInput {
+  btcTransactionInputID Int      @id @default(autoincrement())
+  transactionID         Int
+  address               String
+  amount                Float
+  script                String?
+  scriptType            String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model BtcTransactionOutput {
+  btcTransactionOutputID Int      @id @default(autoincrement())
+  transactionID          Int
+  address                String
+  amount                 Float
+  script                 String?
+  scriptType             String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }

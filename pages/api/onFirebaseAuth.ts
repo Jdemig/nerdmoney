@@ -2,7 +2,7 @@ import {NextApiRequest, NextApiResponse} from 'next/types';
 import {adminAuth} from "../../lib/initFirebaseAdmin.ts";
 import prisma from "../../prisma/db.ts";
 import cookie from "cookie";
-import WalletService from "../../services/WalletService.ts";
+import AccountService from "../../services/AccountService.ts";
 import {sendStdError} from "../../utils/response.ts";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -41,16 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             },
                         });
 
-                        await WalletService.generateNewWalletOnSignUp(user.userID);
-                    } else {
-                        const wallet = await prisma.wallet.findFirst({
-                            where: {
-                                userID: user.userID,
-                            },
-                        });
-
-                        if (!wallet)
-                            await WalletService.generateNewWalletOnSignUp(user.userID);
+                        await AccountService.generateNewAccountOnSignUp(user.userID);
                     }
                 } catch (e) {
                     return sendStdError(res, e);

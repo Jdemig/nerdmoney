@@ -1,10 +1,10 @@
 -- CreateTable
 CREATE TABLE "Wallet" (
-    "walletID" SERIAL NOT NULL,
+    "addressID" SERIAL NOT NULL,
     "userID" INTEGER NOT NULL,
     "balance" DOUBLE PRECISION NOT NULL DEFAULT 0,
 
-    CONSTRAINT "Wallet_pkey" PRIMARY KEY ("walletID")
+    CONSTRAINT "Wallet_pkey" PRIMARY KEY ("addressID")
 );
 
 -- AddForeignKey

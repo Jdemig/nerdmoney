@@ -15,7 +15,7 @@ ALTER TABLE "Wallet" ADD COLUMN     "address" TEXT NOT NULL;
 CREATE TABLE "Transaction" (
     "transactionID" SERIAL NOT NULL,
     "userID" INTEGER NOT NULL,
-    "walletID" INTEGER NOT NULL,
+    "addressID" INTEGER NOT NULL,
     "txhash" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "confirmations" INTEGER NOT NULL,

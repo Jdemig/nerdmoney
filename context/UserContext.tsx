@@ -93,7 +93,6 @@ const UserProvider = ({ children }) => {
                onFirebaseAuth(user);
             })
             .catch((err) => {
-                console.log(err.code);
                if (err.code === 'auth/email-already-in-use') {
                    onSignInClick(email, password);
                }
